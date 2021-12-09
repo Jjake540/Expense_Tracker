@@ -33,11 +33,33 @@ function AddtransactionDOM(transaction) {
   list.appendChild(item);
 }
 
+// Update the balance, income and expences
+function updateValues() {
+  const amounts = transactions.map(transaction => transaction.amount);
+
+  const total = amounts.reduce((accumulator, item) => (accumulator += item), 0).toFixed(2);
+
+  const income = amounts
+    .filter(item => item > 0)
+    .reduce((accumulator, item) => (accumulator += item), 0)
+    .toFixed(2);
+
+  const expence = (
+    amounts.filter(item => item < 0 )
+    .reduce((accumulator, item) => (accumulator += item), 0) * -1)
+    .toFixed(2);
+  
+  balance.innerText = `£${total}`
+  moneyPlus.innerText = `£${income}`
+  moneyMinus.innerText = `£${expence}`
+}
+
 //Init app
 function init() {
   list.innerHTML = '';
 
   transactions.forEach(AddtransactionDOM);
+  updateValues()
 }
 
 init();
